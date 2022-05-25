@@ -1,0 +1,24 @@
+package teste.basico;
+
+import java.util.List;
+import infra.ProdutoDAO;
+import modelo.basico.Produto;
+
+public class ObterProdutos {
+
+	public static void main(String[] args) {
+
+		ProdutoDAO dao = new ProdutoDAO();
+		List<Produto> produtos = dao.obterTodos();
+
+		for (Produto produto : produtos) {
+			System.out.println("Id: " + produto.getId() + ", Nome: " + produto.getNome());
+		}
+		
+		double precoTotal = produtos.stream().map(p -> p.getPreco()).reduce(0.0, (t, p) -> t + p ).doubleValue();
+		
+		System.out.printf("O valor total é R$ %.2f", precoTotal);
+		
+		dao.fechar();
+	}
+}
