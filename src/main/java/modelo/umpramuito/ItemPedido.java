@@ -1,5 +1,6 @@
 package modelo.umpramuito;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +18,9 @@ public class ItemPedido {
 	private Pedido pedido;
 	@ManyToOne
 	private Produto produto;
+	@Column(nullable = false)
 	private int quantidade;
+	@Column(nullable = false)
 	private Double preco;
 
 	public ItemPedido() {
