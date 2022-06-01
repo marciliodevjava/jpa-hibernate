@@ -3,10 +3,13 @@ package modelo.muitopramuitos;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -18,8 +21,11 @@ public class Filme {
 	private Long id;
 	private String nome;
 	private Double nota;
-	@ManyToMany
-	private List<Ator> atores = new ArrayList<>();
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "atores_filmes", joinColumns = @JoinColumn(name = "filme_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "ator_id", referencedColumnName = "id")) // Junção
+																																																	// de
+																																																	// Tabela
+	private List<Ator> atores;
 
 	public Filme() {
 
@@ -56,6 +62,9 @@ public class Filme {
 	}
 
 	public List<Ator> getAtores() {
+		if(atores == null) {
+			atores = new ArrayList<>();
+		}
 		return atores;
 	}
 
@@ -63,4 +72,13 @@ public class Filme {
 		this.atores = atores;
 	}
 
+	public void adicionrAtor(Ator ator) {
+		if (ator != null && !getAtores().contains(ator)) {
+			getAtores().add(ator);
+			
+			if (!ator.getFilmes().contains(this)) {
+				ator.getFilmes().add(this);
+			}
+		}
+	}
 }
