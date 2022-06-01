@@ -29,58 +29,64 @@ public class DAO<E> {
 		em = emf.createEntityManager();
 	}
 
-	public DAO<E> teste(){
+	public DAO<E> teste() {
 		return this;
 	}
-	
-	public DAO<E> abrirT(){
+
+	public DAO<E> abrirT() {
 		em.getTransaction().begin();
 		return this;
 	}
-	
-	public DAO<E> fecharT(){
+
+	public DAO<E> fecharT() {
 		em.getTransaction().commit();
 		return this;
 	}
-	
-	public DAO<E> incluirT(E entidade){
+
+	public DAO<E> incluirT(E entidade) {
 		em.persist(entidade);
 		return this;
 	}
-	
-	public DAO<E> incluirAtomico(E entidade){
+
+	public DAO<E> incluirAtomico(E entidade) {
 		return this.abrirT().incluirT(entidade).fecharT();
 	}
-	
+
 	public E obterPorID(Object id) {
 		return em.find(classe, id);
 	}
-	public List<E> obterTodos(){
+
+	public List<E> obterTodos() {
 		return obterTodos(10, 0);
 	}
-	
+
 	public List<E> obterTodos(int qtde, int deslocamento) {
-		if(classe == null) {
+		if (classe == null) {
 			throw new UnsupportedOperationException("Classe nula");
 		}
-		
+
 		String jpql = "SELECT e FROM " + classe.getName() + " e";
 		TypedQuery<E> query = em.createQuery(jpql, classe);
 		query.setMaxResults(qtde);
 		query.setFirstResult(deslocamento);
 		return query.getResultList();
 	}
-	
-	public List<E> consultar(String nomeConsulta, Object... params){
+
+	public List<E> consultar(String nomeConsulta, Object... params) {
 		TypedQuery<E> query = em.createNamedQuery(nomeConsulta, classe);
-		//for personalizado com 2 parametros
-		for(int i = 0; i <params.length; i+=2) {
+		// for personalizado com 2 parametros
+		for (int i = 0; i < params.length; i += 2) {
 			query.setParameter(params[i].toString(), params[i + 1]);
 		}
-		
+
 		return query.getResultList();
 	}
-	
+
+	public E consultarUm(String nomeConsulta, Object... params) {
+		List<E> lista = consultar(nomeConsulta, params);
+		return lista.isEmpty() ? null : lista.get(0);
+	}
+
 	public void fechar() {
 		em.close();
 	}

@@ -11,7 +11,8 @@
 			where f.nota > :nota
 		</query>
 	</named-query>
-	<named-native-query name="ObterMediaGeralDosFilmes">
+	<!-- mostra a consulta SQL Native Name Query-->
+	<named-native-query name="ObterMediaGeralDosFilmes"  result-set-mapping="NotaFilmeMap">
 		<query>
 			SELECT avg(nota) AS media FROM filmes;
 		</query>
@@ -20,5 +21,6 @@
 		<constructor-result target-class="modelo.consulta.NotaFilme">
 			<column name="media" class="java.lang.Double" />
 		</constructor-result>
+		
 	</sql-result-set-mapping>
 </entity-mappings>
