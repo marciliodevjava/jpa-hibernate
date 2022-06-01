@@ -29,11 +29,11 @@ public class Fornecedor {
 	}
 
 	public String getNoma() {
-		return noma;
+		return nome;
 	}
 
 	public void setNoma(String noma) {
-		this.noma = noma;
+		this.nome = noma;
 	}
 
 	public Endereco getEndereco() {
