@@ -2,6 +2,7 @@ package modelo.umpramuito;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ public class ItemPedido {
 	private Long id;
 	@ManyToOne
 	private Pedido pedido;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)//Lazy- Consulta mais pequenas - EAGER - Trás tudo, pais, filhos.
 	private Produto produto;
 	@Column(nullable = false)
 	private int quantidade;
